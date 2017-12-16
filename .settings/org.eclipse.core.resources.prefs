@@ -1,6 +1,9 @@
 eclipse.preferences.version=1
-encoding//crawling/Throttle.py=utf-8
 encoding//crawling/callBack.py=utf-8
 encoding//crawling/crawling.py=utf-8
+encoding//crawling/diskCache.py=utf-8
+encoding//crawling/downloader.py=utf-8
+encoding//crawling/link_crawler.py=utf-8
 encoding//crawling/scraping.py=utf-8
 encoding//crawling/test.py=utf-8
+encoding//crawling/throttle.py=utf-8

@@ -14,7 +14,7 @@ class Throttle(object):
     classdocs
     '''
 
-
+    # 单位秒
     def __init__(self, delay):
         '''
         Constructor

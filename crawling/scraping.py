@@ -7,6 +7,7 @@ Created on 2017-11-12
 '''
 from crawling import download
 import time
+from crawling import crawl_link
 
 FIELDS = ('area', 'population', 'iso', 'country', 'capital',
          'continent', 'tld', 'currency_code', 'currency_name', 
@@ -56,7 +57,21 @@ def lxml_scraper(html):
             results[field] = selectResult[0].text_content()
     return results
 
-if __name__ == '__main__':
+
+
+def scrape_callback(url, html):
+    if re.search('/view/', url):
+        row = []
+        tree = lxml.html.fromstring(html)
+        for field in FIELDS:
+            selectResult = tree.cssselect('table > tr#places_%s__row > td.w2p_fw' % field)
+            if selectResult is None:
+                print "not find [%s] informations!" % field
+            else:
+                row.append(selectResult[0].text_content())
+        print url, row 
+
+def test_performance():
     NUM_ITERATIONS = 1000
     html = download('http://example.webscraping.com/places/default/view/1')
     if html is None:
@@ -73,4 +88,7 @@ if __name__ == '__main__':
                 print "%s scraper html has error happend!"
         end = time.time()
         print '%s: %.2f seconds' %(name, end - start)
+
+if __name__ == '__main__':
+    crawl_link("http://example.webscraping.com", '(/places/default/view/)', scrape_callback = scrape_callback)
     print "Hello python"

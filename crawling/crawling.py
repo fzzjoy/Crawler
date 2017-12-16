@@ -11,9 +11,10 @@ import urllib2
 import re
 import urlparse
 import robotparser
-from Throttle import Throttle
+from throttle import Throttle
 from distutils.filelist import findall
 import _threading_local
+import lxml.html
 
 rp = robotparser.RobotFileParser()
 
@@ -84,7 +85,7 @@ def crawl_byID(oriUrl):
             print "download success " + url    
    
 # 链接爬虫
-def crawl_link(seed_url, link_regex, max_depth = 2, delay = 3):
+def crawl_link(seed_url, link_regex, max_depth = 2, delay = 3, scrape_callback = None):
     crawl_queue = [seed_url]
     seen = {seed_url: 0}
     throttle = Throttle(delay)
@@ -94,6 +95,10 @@ def crawl_link(seed_url, link_regex, max_depth = 2, delay = 3):
         html = download(url)
         if html is None:
             return
+        
+        links = []
+        if scrape_callback:
+            links.extend(scrape_callback(url, html) or []) #or []:代表追加的是个空列表
         # check is max depth
         depth = seen[url]
         if depth != max_depth:

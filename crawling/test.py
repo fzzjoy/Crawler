@@ -14,6 +14,8 @@ import timeit
 from bs4 import BeautifulSoup
 import lxml.html
 
+from pymongo import MongoClient
+
 FIELDS = ('area', 'population', 'iso', 'country', 'capital', 'continent', 'tld', 'currency_code', 'currency_name', 'phone', 'postal_code_format', 'postal_code_regex', 'languages', 'neighbours')
 
 
@@ -78,5 +80,17 @@ def testFunc():
     return d 
 
 if __name__ == '__main__':
-    result = testFunc();
-    print result['b']
+#     result = testFunc();
+#     print result['b']
+    client = MongoClient('localhost', 27017)
+    url = 'http://example.webscraping.com/view/United-Kingdom-239'
+    html = '...'
+    db = client.cache #连接cache数据库,如果没有 则会自动创建
+    mytest = db.webpage #使用webpage集合，如果没有则会自动创建
+    mytest.insert({'myurl': url, 'html': html})
+    my_instance = mytest.find_one({"myurl":url})
+    print my_instance['myurl']
+    
+    mytest.insert({'myurl': url, 'html': html})
+    print mytest.find({'myurl': url}).count()
+    print "Hello LiM"

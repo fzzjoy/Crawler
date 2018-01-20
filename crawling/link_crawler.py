@@ -9,6 +9,7 @@ from downloader import Downloader
 import re
 import urlparse
 from diskCache import DiskCache
+from mongodbCache import MongoCache
 
 def crawl_link(seed_url, link_regex = None, user_agent = 'wswp', max_urls = -1, delay = 5, proxies = None, max_depth = 2, num_retries = 1, scrape_callback = None, cache = None):
     crawl_queue = [seed_url]
@@ -43,6 +44,6 @@ def get_links(html):
     return webpage_regex.findall(html)
 
 if __name__ == '__main__':
-    crawl_link(seed_url="http://example.webscraping.com", link_regex='(/places/default/view/)',  cache=DiskCache())
+    crawl_link(seed_url="http://example.webscraping.com", link_regex='(/places/default/view/)',  cache=MongoCache())
     print 'Hello python'
     pass
